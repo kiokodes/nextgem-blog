@@ -1,4 +1,4 @@
-import { client } from '../lib/sanity'
+import { client } from './lib/sanity'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 

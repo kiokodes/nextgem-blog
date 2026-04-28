@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { client } from './lib/sanity'
 import Link from 'next/link'
 import type { Metadata } from 'next'
@@ -8,23 +7,6 @@ export const metadata: Metadata = {
   description:
     'Updates, impact stories, event coverage, and insights from NextGEM Foundation and our partner orphanages across Nigeria.',
 }
-=======
-'use client'
-
-import { useEffect, useState } from 'react'
-import { createClient } from 'next-sanity'
-import Link from 'next/link'
-import './styles.css'
-
-const client = createClient({
-  projectId: '6l4myqih',
-  dataset: 'production',
-  apiVersion: '2021-10-21',
-  useCdn: true,
-})
-
-const SITE = 'https://www.nextgemfoundation.com'
->>>>>>> 271daaf (next-gem blog update)
 
 interface Post {
   _id: string
@@ -37,7 +19,6 @@ interface Post {
   excerpt?: string
 }
 
-<<<<<<< HEAD
 async function getPosts(): Promise<Post[]> {
   return client.fetch(`
     *[_type == "post"] | order(publishedAt desc) {
@@ -52,21 +33,10 @@ async function getPosts(): Promise<Post[]> {
     }
   `)
 }
-=======
-const CATEGORIES = [
-  { label: 'All', value: '' },
-  { label: 'News', value: 'news' },
-  { label: 'Events', value: 'events' },
-  { label: 'Impact Stories', value: 'impact' },
-  { label: 'Volunteer', value: 'volunteer' },
-  { label: 'Orphanages', value: 'orphanage' },
-]
->>>>>>> 271daaf (next-gem blog update)
 
 function formatDate(dateStr: string) {
   if (!dateStr) return ''
   return new Date(dateStr).toLocaleDateString('en-GB', {
-<<<<<<< HEAD
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -212,62 +182,15 @@ export default async function BlogIndexPage() {
         rel="stylesheet"
       />
 
-=======
-    day: 'numeric', month: 'long', year: 'numeric',
-  })
-}
-
-export default function BlogIndexPage() {
-  const [allPosts, setAllPosts] = useState<Post[]>([])
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [activeCategory, setActiveCategory] = useState('')
-  const [searchQuery, setSearchQuery] = useState('')
-
-  useEffect(() => {
-    client.fetch<Post[]>(`
-      *[_type == "post"] | order(publishedAt desc) {
-        _id, title, slug, publishedAt, excerpt,
-        "imageUrl": mainImage.asset->url,
-        "authorName": author->name,
-        "categoryTitle": categories[0]->title
-      }
-    `).then(setAllPosts)
-  }, [])
-
-  // Filter logic
-  const featured = allPosts[0] ?? null
-  const rest = allPosts.slice(1).filter(post => {
-    const matchCat = !activeCategory ||
-      (post.categoryTitle ?? '').toLowerCase().includes(activeCategory)
-    const matchSearch = !searchQuery ||
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (post.excerpt ?? '').toLowerCase().includes(searchQuery.toLowerCase())
-    return matchCat && matchSearch
-  })
-
-  // Close menu when body overflow needed
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
-  }, [menuOpen])
-
-  return (
-    <>
->>>>>>> 271daaf (next-gem blog update)
       {/* NAVBAR */}
       <nav>
         <div className="container">
           <div className="nav-inner">
-<<<<<<< HEAD
             <a href="/" className="nav-logo">
-=======
-            <a href={SITE} className="nav-logo">
->>>>>>> 271daaf (next-gem blog update)
               <img src="/assets/logo.png" alt="NextGEM Foundation Logo" />
             </a>
             <div className="nav-links">
               <div className="nav-dropdown">
-<<<<<<< HEAD
                 <a href="/#programs">Our Programs</a>
                 <div className="dropdown-menu">
                   <a href="/orphanage-games">The Orphanage Games</a>
@@ -283,32 +206,10 @@ export default function BlogIndexPage() {
               <a href="/donate" className="btn-blue">Donate Now</a>
             </div>
             <button className="hamburger" id="hamburger" aria-label="Open menu">
-=======
-                <a href={`${SITE}/#programs`}>Our Programs</a>
-                <div className="dropdown-menu">
-                  <a href={`${SITE}/orphanage-games.html`}>The Orphanage Games</a>
-                </div>
-              </div>
-              <a href={`${SITE}/donate.html`}>Donate</a>
-              <a href={`${SITE}/volunteer.html`}>Volunteer</a>
-              <a href={`${SITE}/orphanages.html`}>Visit</a>
-              <a href="/blog" className="nav-active">Blog</a>
-              <a href={`${SITE}/#contact`}>Contact</a>
-              <a href={`${SITE}/partner.html`}>Partner</a>
-              <a href={`${SITE}/about.html`}>Our Story</a>
-              <a href={`${SITE}/donate.html`} className="btn-blue">Donate Now</a>
-            </div>
-            <button
-              className={`hamburger${menuOpen ? ' open' : ''}`}
-              onClick={() => setMenuOpen(prev => !prev)}
-              aria-label="Toggle menu"
-            >
->>>>>>> 271daaf (next-gem blog update)
               <span></span><span></span><span></span>
             </button>
           </div>
         </div>
-<<<<<<< HEAD
         <div className="mobile-menu" id="mobile-menu">
           <a href="/#programs">Our Programs</a>
           <a href="/orphanage-games">The Orphanage Games</a>
@@ -319,20 +220,6 @@ export default function BlogIndexPage() {
           <a href="/about">About</a>
           <a href="/#contact">Contact</a>
           <a href="/donate" className="mobile-donate-btn">Donate Now</a>
-=======
-
-        {/* MOBILE MENU */}
-        <div className={`mobile-menu${menuOpen ? ' open' : ''}`}>
-          <a href={`${SITE}/#programs`} onClick={() => setMenuOpen(false)}>Our Programs</a>
-          <a href={`${SITE}/orphanage-games.html`} onClick={() => setMenuOpen(false)}>The Orphanage Games</a>
-          <a href="/blog" onClick={() => setMenuOpen(false)}>Blog</a>
-          <a href={`${SITE}/orphanages.html`} onClick={() => setMenuOpen(false)}>Visit</a>
-          <a href={`${SITE}/volunteer.html`} onClick={() => setMenuOpen(false)}>Volunteer</a>
-          <a href={`${SITE}/partner.html`} onClick={() => setMenuOpen(false)}>Partner</a>
-          <a href={`${SITE}/about.html`} onClick={() => setMenuOpen(false)}>About</a>
-          <a href={`${SITE}/#contact`} onClick={() => setMenuOpen(false)}>Contact</a>
-          <a href={`${SITE}/donate.html`} className="mobile-donate-btn" onClick={() => setMenuOpen(false)}>Donate Now</a>
->>>>>>> 271daaf (next-gem blog update)
         </div>
       </nav>
 
@@ -346,11 +233,7 @@ export default function BlogIndexPage() {
             </div>
             <div className="header-stats">
               <div>
-<<<<<<< HEAD
                 <div className="hstat-num">{allPosts.length}</div>
-=======
-                <div className="hstat-num">{allPosts.length || '—'}</div>
->>>>>>> 271daaf (next-gem blog update)
                 <div className="hstat-label">Published Articles</div>
               </div>
               <div>
@@ -362,7 +245,6 @@ export default function BlogIndexPage() {
         </div>
       </section>
 
-<<<<<<< HEAD
       {/* FEATURED */}
       <section className="featured">
         <div className="container">
@@ -375,17 +257,6 @@ export default function BlogIndexPage() {
                     src={`${featured.imageUrl}?w=720&auto=format`}
                     alt={featured.title}
                   />
-=======
-      {/* FEATURED — always shows most recent post, unaffected by filters */}
-      {featured && (
-        <section className="featured">
-          <div className="container">
-            <p className="featured-label">Featured Story</p>
-            <Link href={`/blog/${featured.slug.current}`} className="featured-card">
-              <div className="featured-img">
-                {featured.imageUrl && (
-                  <img src={`${featured.imageUrl}?w=720&auto=format`} alt={featured.title} />
->>>>>>> 271daaf (next-gem blog update)
                 )}
               </div>
               <div className="featured-body">
@@ -401,7 +272,6 @@ export default function BlogIndexPage() {
                 </div>
               </div>
             </Link>
-<<<<<<< HEAD
           )}
         </div>
       </section>
@@ -417,32 +287,6 @@ export default function BlogIndexPage() {
           <span className="cat-pill">Orphanages</span>
           <div className="search-wrap">
             <input type="text" className="search-input" placeholder="Search articles..." readOnly />
-=======
-          </div>
-        </section>
-      )}
-
-      {/* FILTER BAR */}
-      <div className="container">
-        <div className="filter-bar">
-          {CATEGORIES.map(cat => (
-            <span
-              key={cat.value}
-              className={`cat-pill${activeCategory === cat.value ? ' active' : ''}`}
-              onClick={() => setActiveCategory(cat.value)}
-            >
-              {cat.label}
-            </span>
-          ))}
-          <div className="search-wrap">
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Search articles..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-            />
->>>>>>> 271daaf (next-gem blog update)
           </div>
         </div>
       </div>
@@ -451,7 +295,6 @@ export default function BlogIndexPage() {
       <section className="blog-grid-section">
         <div className="container">
           <div className="blog-grid">
-<<<<<<< HEAD
             {rest.map(post => (
               <Link key={post._id} href={`/blog/${post.slug.current}`} className="blog-card">
                 <div className="blog-card-img">
@@ -478,38 +321,6 @@ export default function BlogIndexPage() {
                 </div>
               </Link>
             ))}
-=======
-            {rest.length === 0 && allPosts.length > 0 ? (
-              <div className="empty-state">
-                <h3>No articles found</h3>
-                <p>Try a different category or clear your search.</p>
-              </div>
-            ) : (
-              rest.map(post => (
-                <Link key={post._id} href={`/blog/${post.slug.current}`} className="blog-card">
-                  <div className="blog-card-img">
-                    {post.imageUrl && (
-                      <img src={`${post.imageUrl}?w=480&auto=format`} alt={post.title} />
-                    )}
-                  </div>
-                  <div className="blog-card-body">
-                    {post.categoryTitle && (
-                      <span className="post-category" style={{ fontSize: 10 }}>{post.categoryTitle}</span>
-                    )}
-                    <h3 className="blog-card-title">{post.title}</h3>
-                    <p className="blog-card-excerpt">
-                      {(post.excerpt ?? '').slice(0, 120)}{(post.excerpt?.length ?? 0) > 120 ? '...' : ''}
-                    </p>
-                    <div className="blog-card-meta">
-                      <span>{post.authorName ?? 'NextGEM Team'}</span>
-                      <span className="post-meta-dot"></span>
-                      <span>{formatDate(post.publishedAt)}</span>
-                    </div>
-                  </div>
-                </Link>
-              ))
-            )}
->>>>>>> 271daaf (next-gem blog update)
           </div>
         </div>
       </section>
@@ -519,11 +330,7 @@ export default function BlogIndexPage() {
         <div className="container">
           <h2>Every Donation Gives an Orphan a Future</h2>
           <p>Your support funds education, healthcare, and opportunity for orphaned children across Nigeria.</p>
-<<<<<<< HEAD
           <Link href="/donate" className="btn-white-solid">Donate Now →</Link>
-=======
-          <a href={`${SITE}/donate.html`} className="btn-white-solid">Donate Now →</a>
->>>>>>> 271daaf (next-gem blog update)
         </div>
       </section>
 
@@ -547,48 +354,28 @@ export default function BlogIndexPage() {
             <div className="footer-col">
               <h4>Our Focus</h4>
               <ul>
-<<<<<<< HEAD
                 <li><a href="/volunteer">NextGEM Refiners</a></li>
                 <li><a href="/donate">NextGem Support</a></li>
                 <li><a href="/#programs">NextGem Spotlight</a></li>
                 <li><a href="/orphanage-games">The Orphanage Games</a></li>
-=======
-                <li><a href={`${SITE}/volunteer.html`}>NextGEM Refiners</a></li>
-                <li><a href={`${SITE}/donate.html`}>NextGem Support</a></li>
-                <li><a href={`${SITE}/#programs`}>NextGem Spotlight</a></li>
-                <li><a href={`${SITE}/orphanage-games.html`}>The Orphanage Games</a></li>
->>>>>>> 271daaf (next-gem blog update)
               </ul>
             </div>
             <div className="footer-col">
               <h4>Get Involved</h4>
               <ul>
-<<<<<<< HEAD
                 <li><a href="/donate">Donate</a></li>
                 <li><a href="/volunteer">Volunteer</a></li>
                 <li><a href="/partner">Partner with Us</a></li>
                 <li><a href="/blog">Share the Story</a></li>
                 <li><a href="/#contact">Contact Us</a></li>
-=======
-                <li><a href={`${SITE}/donate.html`}>Donate</a></li>
-                <li><a href={`${SITE}/volunteer.html`}>Volunteer</a></li>
-                <li><a href={`${SITE}/partner.html`}>Partner with Us</a></li>
-                <li><a href="/blog">Share the Story</a></li>
-                <li><a href={`${SITE}/#contact`}>Contact Us</a></li>
->>>>>>> 271daaf (next-gem blog update)
               </ul>
             </div>
             <div className="footer-col">
               <h4>Contact</h4>
               <ul>
                 <li><a href="mailto:nextgemfoundation@gmail.com">nextgemfoundation@gmail.com</a></li>
-<<<<<<< HEAD
                 <li><a href="#">Yenagoa, Bayelsa, Nigeria</a></li>
                 <li><a href="/publication">Publications</a></li>
-=======
-                <li><a href={`${SITE}/#contact`}>Yenagoa, Bayelsa, Nigeria</a></li>
-                <li><a href={`${SITE}/publication.html`}>Publications</a></li>
->>>>>>> 271daaf (next-gem blog update)
               </ul>
             </div>
           </div>
@@ -604,7 +391,6 @@ export default function BlogIndexPage() {
           </div>
         </div>
       </footer>
-<<<<<<< HEAD
 
       {/* Hamburger script */}
       <script dangerouslySetInnerHTML={{ __html: `
@@ -618,8 +404,6 @@ export default function BlogIndexPage() {
           });
         }
       `}} />
-=======
->>>>>>> 271daaf (next-gem blog update)
     </>
   )
 }

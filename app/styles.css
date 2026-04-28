@@ -15,7 +15,7 @@
         /* NAVBAR */
         nav { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1px solid #e8e8e8; }
         .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-        .nav-logo img { width: 200px; height: 64px; object-fit: contain; }
+        .nav-logo img { width: 300px; height: 70px; object-fit: contain; }
         .nav-links { display: flex; align-items: center; gap: 28px; }
         .nav-links a { font-size: 13px; font-weight: 500; color: var(--text); transition: color .2s; }
         .nav-links a:hover { color: var(--blue); }

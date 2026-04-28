@@ -54,8 +54,12 @@ const ptComponents = {
   },
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const { slug } = params
+export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const [slug, setSlug] = useState<string>('')
+
+  useEffect(() => {
+    Promise.resolve(params).then(p => setSlug(p.slug))
+  }, [])
   const [post, setPost] = useState<any>(null)
   const [recent, setRecent] = useState<any[]>([])
   const [menuOpen, setMenuOpen] = useState(false)
@@ -67,7 +71,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const [donateClosed, setDonateClosed] = useState(false)
   const [copied, setCopied] = useState(false)
 
-  useEffect(() => {
+ useEffect(() => {
+    if (!slug) return
     client.fetch(`*[_type == "post" && slug.current == $slug][0] {
       title, publishedAt, body, metaDescription,
       "authorName": author->name,

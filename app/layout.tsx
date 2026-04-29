@@ -11,9 +11,9 @@ export const metadata: Metadata = {
   },
   description: 'Updates, impact stories, event coverage and insights from NextGem Foundation and our partner orphanages across Nigeria.',
   icons: {
-    icon: 'https://nextgem.sirv.com/favicon.png',
-    shortcut: 'https://nextgem.sirv.com/favicon.png',
-    apple: 'https://nextgem.sirv.com/favicon.png',
+    icon: 'https://nextgem.sirv.com/assets/favicon.png',
+    shortcut: 'https://nextgem.sirv.com/assets/favicon.png',
+    apple: 'https://nextgem.sirv.com/assets/favicon.png',
   },
   openGraph: {
     siteName: 'NextGem Foundation',

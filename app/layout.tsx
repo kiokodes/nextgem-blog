@@ -16,13 +16,13 @@ export const metadata: Metadata = {
     apple: 'https://nextgem.sirv.com/assets/favicon.png',
   },
   openGraph: {
-    siteName: 'NextGem Foundation',
+    siteName: 'NextGem Foundation Blog',
     url: 'https://blog.nextgemfoundation.com',
     images: [
       {
         url: 'https://nextgem.sirv.com/assets/logo.png',
-        width: 1200,
-        height: 630,
+        width: 1500,
+        height: 700,
         alt: 'NextGem Foundation',
       },
     ],

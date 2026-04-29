@@ -11,7 +11,6 @@ const client = createClient({
 
 export const revalidate = 3600
 
-// ✅ Pre-renders all posts at build time
 export async function generateStaticParams() {
   const posts = await client.fetch(`
     *[_type == "post" && defined(slug.current)] {
@@ -21,17 +20,17 @@ export async function generateStaticParams() {
   return posts.map((post: { slug: string }) => ({ slug: post.slug }))
 }
 
-// ✅ Auto SEO metadata per post
 export async function generateMetadata(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
+  const { slug } = await params
   const post = await client.fetch(`
     *[_type == "post" && slug.current == $slug][0] {
       title,
       metaDescription,
       "image": mainImage.asset->url
     }
-  `, { slug: params.slug })
+  `, { slug })
 
   if (!post) return {}
 
@@ -41,7 +40,7 @@ export async function generateMetadata(
     openGraph: {
       title: `${post.title} | NextGem Foundation Blog`,
       description: post.metaDescription,
-      url: `https://blog.nextgemfoundation.com/blog/${params.slug}`,
+      url: `https://blog.nextgemfoundation.com/blog/${slug}`,
       siteName: 'NextGem Foundation',
       images: post.image
         ? [{ url: post.image, width: 1200, height: 630, alt: post.title }]
@@ -57,10 +56,11 @@ export async function generateMetadata(
   }
 }
 
-// ✅ Fetch data server-side, pass to client component
 export default async function BlogPostPage(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
+  const { slug } = await params
+
   const post = await client.fetch(`
     *[_type == "post" && slug.current == $slug][0] {
       title, publishedAt, body, metaDescription,
@@ -68,15 +68,15 @@ export default async function BlogPostPage(
       "categoryTitle": categories[0]->title,
       "imageUrl": mainImage.asset->url
     }
-  `, { slug: params.slug })
+  `, { slug })
 
   const recent = await client.fetch(`
     *[_type == "post" && slug.current != $slug] | order(publishedAt desc) [0..3] {
       title, slug, publishedAt, "imageUrl": mainImage.asset->url
     }
-  `, { slug: params.slug })
+  `, { slug })
 
   if (!post) return <div>Post not found</div>
 
-  return <BlogPostClient post={post} recent={recent} slug={params.slug} />
+  return <BlogPostClient post={post} recent={recent} slug={slug} />
 }

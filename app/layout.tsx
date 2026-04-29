@@ -10,6 +10,11 @@ export const metadata: Metadata = {
     template: '%s | NextGem Foundation Blog',
   },
   description: 'Updates, impact stories, event coverage and insights from NextGem Foundation and our partner orphanages across Nigeria.',
+  icons: {
+    icon: 'https://nextgem.sirv.com/favicon.png',
+    shortcut: 'https://nextgem.sirv.com/favicon.png',
+    apple: 'https://nextgem.sirv.com/favicon.png',
+  },
   openGraph: {
     siteName: 'NextGem Foundation',
     url: 'https://blog.nextgemfoundation.com',
@@ -19,13 +24,14 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: 'NextGem Foundation',
-      }
+      },
     ],
   },
   twitter: {
     card: 'summary_large_image',
   },
 }
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={geist.variable}>

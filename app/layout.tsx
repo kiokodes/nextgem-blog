@@ -5,10 +5,27 @@ import './globals.css'
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist-sans' })
 
 export const metadata: Metadata = {
-  title: 'NextGem Foundation | Orphan Support Nigeria',
-  description: 'NextGEM Foundation provides structured support, educational funding, and talent platforms for orphaned children across Nigeria.',
+  title: {
+    default: 'Blog | NextGem Foundation',
+    template: '%s | NextGem Foundation Blog',
+  },
+  description: 'Updates, impact stories, event coverage and insights from NextGem Foundation and our partner orphanages across Nigeria.',
+  openGraph: {
+    siteName: 'NextGem Foundation',
+    url: 'https://blog.nextgemfoundation.com',
+    images: [
+      {
+        url: 'https://nextgem.sirv.com/assets/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'NextGem Foundation',
+      }
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 }
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={geist.variable}>

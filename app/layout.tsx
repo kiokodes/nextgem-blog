@@ -10,11 +10,6 @@ export const metadata: Metadata = {
     template: '%s | NextGem Foundation Blog',
   },
   description: 'Updates, impact stories, event coverage and insights from NextGem Foundation and our partner orphanages across Nigeria.',
-  icons: {
-    icon: 'https://nextgem.sirv.com/assets/favicon.png',
-    shortcut: 'https://nextgem.sirv.com/assets/favicon.png',
-    apple: 'https://nextgem.sirv.com/assets/favicon.png',
-  },
   openGraph: {
     siteName: 'NextGem Foundation Blog',
     url: 'https://blog.nextgemfoundation.com',
@@ -35,7 +30,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={geist.variable}>
+      <head>
+        <link rel="icon" href="https://nextgem.sirv.com/assets/favicon.png" type="image/png" />
+        <link rel="shortcut icon" href="https://nextgem.sirv.com/assets/favicon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="https://nextgem.sirv.com/assets/favicon.png" />
+      </head>
       <body>{children}</body>
     </html>
   )
 }
+

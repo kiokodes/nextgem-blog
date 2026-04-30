@@ -222,7 +222,7 @@
       .featured-img { height: 260px; }
       .blog-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
-      .filter-bar { flex-direction: column; align-items: flex-start; }
+      .filter-bar { min-height: 52px; padding: 48px 0 32px; flex-direction: column; align-items: flex-start; }
       .search-wrap { margin-left: 0; width: 100%; }
       .search-input { width: 100%; }
       .hamburger{display:flex}

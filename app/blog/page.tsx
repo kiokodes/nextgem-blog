@@ -82,7 +82,7 @@ export default function BlogIndexPage() {
         <div className="container">
           <div className="nav-inner">
             <a href={SITE} className="nav-logo">
-              <img src="/assets/logo.png" alt="NextGEM Foundation Logo" />
+              <img src="https://nextgem.sirv.com/assets/logo.png" alt="NextGEM Foundation Logo" width={200} height={64} />
             </a>
             <div className="nav-links">
               <div className="nav-dropdown">
@@ -154,7 +154,7 @@ export default function BlogIndexPage() {
             <Link href={`/blog/${featured.slug.current}`} className="featured-card">
               <div className="featured-img">
                 {featured.imageUrl && (
-                  <img src={`${featured.imageUrl}?w=720&auto=format`} alt={featured.title} />
+                  <img src={`${featured.imageUrl}?w=720&auto=format`} alt={featured.title}  fetchPriority="high" />
                 )}
               </div>
               <div className="featured-body">
@@ -251,7 +251,7 @@ export default function BlogIndexPage() {
           <div className="footer-grid">
             <div>
               <div className="footer-brand-logo">
-                <img src="/assets/logo.png" alt="NextGEM Logo" />
+                <img src="https://nextgem.sirv.com/assets/logo.png" alt="NextGEM Foundation Logo" width={200} height={64} />
                 <span className="footer-brand-name">NextGem Foundation</span>
               </div>
               <p className="footer-desc">NextGEM Foundation provides structured support, educational funding, and talent platforms for orphaned children.</p>

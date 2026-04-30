@@ -34,6 +34,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="https://nextgem.sirv.com/assets/favicon.png" type="image/png" />
         <link rel="shortcut icon" href="https://nextgem.sirv.com/assets/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="https://nextgem.sirv.com/assets/favicon.png" />
+
+        <link rel="preconnect" href="https://6l4myqih.apicdn.sanity.io" />
+        <link rel="preconnect" href="https://cdn.sanity.io" />
+
       </head>
       <body>{children}</body>
     </html>

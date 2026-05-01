@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { createClient } from 'next-sanity'
 import Link from 'next/link'
-import '../styles.css'
+import './styles.css'
 
 const client = createClient({
   projectId: '6l4myqih',

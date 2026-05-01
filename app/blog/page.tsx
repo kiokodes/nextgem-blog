@@ -13,6 +13,7 @@ const client = createClient({
 })
 
 const SITE = 'https://www.nextgemfoundation.com'
+const POSTS_PER_PAGE = 12
 
 interface Post {
   _id: string
@@ -46,6 +47,7 @@ export default function BlogIndexPage() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
     client.fetch<Post[]>(`
@@ -58,9 +60,21 @@ export default function BlogIndexPage() {
     `).then(setAllPosts)
   }, [])
 
-  // Filter logic
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [activeCategory, searchQuery])
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
+  // Featured is always the most recent post, unaffected by filters/pagination
   const featured = allPosts[0] ?? null
-  const rest = allPosts.slice(1).filter(post => {
+
+  // All posts except featured, filtered
+  const filteredPosts = allPosts.slice(1).filter(post => {
     const matchCat = !activeCategory ||
       (post.categoryTitle ?? '').toLowerCase().includes(activeCategory)
     const matchSearch = !searchQuery ||
@@ -69,11 +83,21 @@ export default function BlogIndexPage() {
     return matchCat && matchSearch
   })
 
-  // Close menu when body overflow needed
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
-  }, [menuOpen])
+  // Pagination
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
+  const paginatedPosts = filteredPosts.slice(
+    (currentPage - 1) * POSTS_PER_PAGE,
+    currentPage * POSTS_PER_PAGE
+  )
+
+  function scrollToGrid() {
+    document.getElementById('blog-grid-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  function goToPage(page: number) {
+    setCurrentPage(page)
+    scrollToGrid()
+  }
 
   return (
     <>
@@ -88,17 +112,17 @@ export default function BlogIndexPage() {
               <div className="nav-dropdown">
                 <a href={`${SITE}/#programs`}>Our Programs</a>
                 <div className="dropdown-menu">
-                  <a href={`${SITE}/orphanage-games.html`}>The Orphanage Games</a>
+                  <a href={`${SITE}/orphanage-games`}>The Orphanage Games</a>
                 </div>
               </div>
-              <a href={`${SITE}/donate.html`}>Donate</a>
-              <a href={`${SITE}/volunteer.html`}>Volunteer</a>
-              <a href={`${SITE}/orphanages.html`}>Visit</a>
+              <a href={`${SITE}/donate`}>Donate</a>
+              <a href={`${SITE}/volunteer`}>Volunteer</a>
+              <a href={`${SITE}/orphanages`}>Visit</a>
               <a href="/blog" className="nav-active">Blog</a>
               <a href={`${SITE}/#contact`}>Contact</a>
-              <a href={`${SITE}/partner.html`}>Partner</a>
-              <a href={`${SITE}/about.html`}>Our Story</a>
-              <a href={`${SITE}/donate.html`} className="btn-blue">Donate Now</a>
+              <a href={`${SITE}/partner`}>Partner</a>
+              <a href={`${SITE}/about`}>Our Story</a>
+              <a href={`${SITE}/donate`} className="btn-blue">Donate Now</a>
             </div>
             <button
               className={`hamburger${menuOpen ? ' open' : ''}`}
@@ -113,14 +137,14 @@ export default function BlogIndexPage() {
         {/* MOBILE MENU */}
         <div className={`mobile-menu${menuOpen ? ' open' : ''}`}>
           <a href={`${SITE}/#programs`} onClick={() => setMenuOpen(false)}>Our Programs</a>
-          <a href={`${SITE}/orphanage-games.html`} onClick={() => setMenuOpen(false)}>The Orphanage Games</a>
+          <a href={`${SITE}/orphanage-games`} onClick={() => setMenuOpen(false)}>The Orphanage Games</a>
           <a href="/blog" onClick={() => setMenuOpen(false)}>Blog</a>
-          <a href={`${SITE}/orphanages.html`} onClick={() => setMenuOpen(false)}>Visit</a>
-          <a href={`${SITE}/volunteer.html`} onClick={() => setMenuOpen(false)}>Volunteer</a>
-          <a href={`${SITE}/partner.html`} onClick={() => setMenuOpen(false)}>Partner</a>
-          <a href={`${SITE}/about.html`} onClick={() => setMenuOpen(false)}>About</a>
+          <a href={`${SITE}/orphanages`} onClick={() => setMenuOpen(false)}>Visit</a>
+          <a href={`${SITE}/volunteer`} onClick={() => setMenuOpen(false)}>Volunteer</a>
+          <a href={`${SITE}/partner`} onClick={() => setMenuOpen(false)}>Partner</a>
+          <a href={`${SITE}/about`} onClick={() => setMenuOpen(false)}>About</a>
           <a href={`${SITE}/#contact`} onClick={() => setMenuOpen(false)}>Contact</a>
-          <a href={`${SITE}/donate.html`} className="mobile-donate-btn" onClick={() => setMenuOpen(false)}>Donate Now</a>
+          <a href={`${SITE}/donate`} className="mobile-donate-btn" onClick={() => setMenuOpen(false)}>Donate Now</a>
         </div>
       </nav>
 
@@ -146,7 +170,7 @@ export default function BlogIndexPage() {
         </div>
       </section>
 
-      {/* FEATURED — always shows most recent post, unaffected by filters */}
+      {/* FEATURED — always most recent, unaffected by filters */}
       {featured && (
         <section className="featured">
           <div className="container">
@@ -154,7 +178,7 @@ export default function BlogIndexPage() {
             <Link href={`/blog/${featured.slug.current}`} className="featured-card">
               <div className="featured-img">
                 {featured.imageUrl && (
-                  <img src={`${featured.imageUrl}?w=720&auto=format`} alt={featured.title}  fetchPriority="high" />
+                  <img src={`${featured.imageUrl}?w=720&auto=format`} alt={featured.title} fetchPriority="high" />
                 )}
               </div>
               <div className="featured-body">
@@ -199,16 +223,16 @@ export default function BlogIndexPage() {
       </div>
 
       {/* BLOG GRID */}
-      <section className="blog-grid-section">
+      <section className="blog-grid-section" id="blog-grid-section">
         <div className="container">
           <div className="blog-grid">
-            {rest.length === 0 && allPosts.length > 0 ? (
+            {paginatedPosts.length === 0 && allPosts.length > 0 ? (
               <div className="empty-state">
                 <h3>No articles found</h3>
                 <p>Try a different category or clear your search.</p>
               </div>
             ) : (
-              rest.map(post => (
+              paginatedPosts.map(post => (
                 <Link key={post._id} href={`/blog/${post.slug.current}`} className="blog-card">
                   <div className="blog-card-img">
                     {post.imageUrl && (
@@ -233,6 +257,46 @@ export default function BlogIndexPage() {
               ))
             )}
           </div>
+
+          {/* PAGINATION */}
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                className="page-btn"
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                ← Previous
+              </button>
+
+              <div className="page-numbers">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <button
+                    key={page}
+                    className={`page-num${currentPage === page ? ' active' : ''}`}
+                    onClick={() => goToPage(page)}
+                  >
+                    {page}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                className="page-btn"
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next →
+              </button>
+            </div>
+          )}
+
+          {/* PAGE INFO */}
+          {filteredPosts.length > 0 && (
+            <p className="pagination-info">
+              Showing {((currentPage - 1) * POSTS_PER_PAGE) + 1}–{Math.min(currentPage * POSTS_PER_PAGE, filteredPosts.length)} of {filteredPosts.length} articles
+            </p>
+          )}
         </div>
       </section>
 
@@ -241,7 +305,7 @@ export default function BlogIndexPage() {
         <div className="container">
           <h2>Every Donation Gives an Orphan a Future</h2>
           <p>Your support funds education, healthcare, and opportunity for orphaned children across Nigeria.</p>
-          <a href={`${SITE}/donate.html`} className="btn-white-solid">Donate Now →</a>
+          <a href={`${SITE}/donate`} className="btn-white-solid">Donate Now →</a>
         </div>
       </section>
 
@@ -265,18 +329,18 @@ export default function BlogIndexPage() {
             <div className="footer-col">
               <h4>Our Focus</h4>
               <ul>
-                <li><a href={`${SITE}/volunteer.html`}>NextGEM Refiners</a></li>
-                <li><a href={`${SITE}/donate.html`}>NextGem Support</a></li>
+                <li><a href={`${SITE}/volunteer`}>NextGEM Refiners</a></li>
+                <li><a href={`${SITE}/donate`}>NextGem Support</a></li>
                 <li><a href={`${SITE}/#programs`}>NextGem Spotlight</a></li>
-                <li><a href={`${SITE}/orphanage-games.html`}>The Orphanage Games</a></li>
+                <li><a href={`${SITE}/orphanage-games`}>The Orphanage Games</a></li>
               </ul>
             </div>
             <div className="footer-col">
               <h4>Get Involved</h4>
               <ul>
-                <li><a href={`${SITE}/donate.html`}>Donate</a></li>
-                <li><a href={`${SITE}/volunteer.html`}>Volunteer</a></li>
-                <li><a href={`${SITE}/partner.html`}>Partner with Us</a></li>
+                <li><a href={`${SITE}/donate`}>Donate</a></li>
+                <li><a href={`${SITE}/volunteer`}>Volunteer</a></li>
+                <li><a href={`${SITE}/partner`}>Partner with Us</a></li>
                 <li><a href="/blog">Share the Story</a></li>
                 <li><a href={`${SITE}/#contact`}>Contact Us</a></li>
               </ul>
@@ -286,7 +350,7 @@ export default function BlogIndexPage() {
               <ul>
                 <li><a href="mailto:nextgemfoundation@gmail.com">nextgemfoundation@gmail.com</a></li>
                 <li><a href={`${SITE}/#contact`}>Yenagoa, Bayelsa, Nigeria</a></li>
-                <li><a href={`${SITE}/publication.html`}>Publications</a></li>
+                <li><a href={`${SITE}/publication`}>Publications</a></li>
               </ul>
             </div>
           </div>
@@ -302,6 +366,75 @@ export default function BlogIndexPage() {
           </div>
         </div>
       </footer>
+
+      {/* PAGINATION STYLES */}
+      <style>{`
+        .pagination {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          margin-top: 56px;
+          flex-wrap: wrap;
+        }
+        .page-btn {
+          padding: 10px 20px;
+          border: 1.5px solid #e0e0e0;
+          border-radius: var(--radius);
+          background: var(--white);
+          color: var(--text);
+          font-family: 'DM Sans', sans-serif;
+          font-size: 13px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all .2s;
+        }
+        .page-btn:hover:not(:disabled) {
+          border-color: var(--blue);
+          color: var(--blue);
+        }
+        .page-btn:disabled {
+          opacity: 0.35;
+          cursor: not-allowed;
+        }
+        .page-numbers {
+          display: flex;
+          gap: 6px;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        .page-num {
+          width: 36px;
+          height: 36px;
+          border: 1.5px solid #e0e0e0;
+          border-radius: var(--radius);
+          background: var(--white);
+          color: var(--text);
+          font-family: 'DM Sans', sans-serif;
+          font-size: 13px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all .2s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .page-num:hover {
+          border-color: var(--blue);
+          color: var(--blue);
+        }
+        .page-num.active {
+          background: var(--blue);
+          border-color: var(--blue);
+          color: #fff;
+        }
+        .pagination-info {
+          text-align: center;
+          font-size: 13px;
+          color: var(--muted);
+          margin-top: 16px;
+        }
+      `}</style>
     </>
   )
 }

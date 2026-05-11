@@ -180,6 +180,7 @@ export default function BlogPostClient({ post, recent, slug }: BlogPostClientPro
         .article-body ul,.article-body ol{padding-left:24px;margin-bottom:22px;}
         .article-body li{margin-bottom:8px;}
         .article-body a{color:var(--blue);text-decoration:underline;}
+        .article-body img { border-radius: 10px; margin: 32px 0; width: 100%; max-height: 500px; object-fit: cover; }
         .inline-donate-cta{background:var(--blue-lt);border:1.5px solid var(--blue);border-radius:10px;padding:20px 24px;margin:36px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
         .inline-donate-cta p{font-size:14px;font-weight:600;color:var(--blue);margin:0;}
         .inline-donate-cta a{background:var(--blue);color:var(--white)!important;padding:10px 20px;border-radius:var(--radius);font-size:13px;font-weight:700;white-space:nowrap;}

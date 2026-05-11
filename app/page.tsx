@@ -52,7 +52,7 @@ export default function BlogIndexPage() {
   useEffect(() => {
     client.fetch<Post[]>(`
       *[_type == "post"] | order(publishedAt desc) {
-        _id, title, slug, publishedAt, excerpt,
+        _id, title, slug, publishedAt, "excerpt": coalesce(excerpt, metaDescription),
         "imageUrl": mainImage.asset->url,
         "authorName": author->name,
         "categoryTitle": categories[0]->title

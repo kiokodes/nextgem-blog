@@ -118,7 +118,9 @@ export default function BlogIndexPage() {
               <a href={`${SITE}/donate`}>Donate</a>
               <a href={`${SITE}/volunteer`}>Volunteer</a>
               <a href={`${SITE}/orphanages`}>Visit</a>
-              <a href="/blog" className="nav-active">Blog</a>
+              <a href="https://blog.nextgemfoundation.com" className="nav-active" target="_blank" rel="noopener noreferrer">
+                Blog
+              </a>
               <a href={`${SITE}/#contact`}>Contact</a>
               <a href={`${SITE}/partner`}>Partner</a>
               <a href={`${SITE}/about`}>Our Story</a>
@@ -138,7 +140,9 @@ export default function BlogIndexPage() {
         <div className={`mobile-menu${menuOpen ? ' open' : ''}`}>
           <a href={`${SITE}/#programs`} onClick={() => setMenuOpen(false)}>Our Programs</a>
           <a href={`${SITE}/orphanage-games`} onClick={() => setMenuOpen(false)}>The Orphanage Games</a>
-          <a href="/blog" onClick={() => setMenuOpen(false)}>Blog</a>
+          <a href="https://blog.nextgemfoundation.com" onClick={() => setMenuOpen(false)} target="_blank" rel="noopener noreferrer">
+            Blog
+          </a>
           <a href={`${SITE}/orphanages`} onClick={() => setMenuOpen(false)}>Visit</a>
           <a href={`${SITE}/volunteer`} onClick={() => setMenuOpen(false)}>Volunteer</a>
           <a href={`${SITE}/partner`} onClick={() => setMenuOpen(false)}>Partner</a>

@@ -279,7 +279,9 @@ export default function BlogPostClient({ post, recent, slug }: BlogPostClientPro
               <a href={`${SITE}/donate.html`}>Donate</a>
               <a href={`${SITE}/volunteer.html`}>Volunteer</a>
               <a href={`${SITE}/orphanages.html`}>Visit</a>
-              <Link href="/blog" style={{ color: 'var(--blue)', fontWeight: 700 }}>Blog</Link>
+              <Link href="https://blog.nextgemfoundation.com" style={{ color: 'var(--blue)', fontWeight: 700 }} target="_blank" rel="noopener noreferrer">
+                Blog
+              </Link>
               <a href={`${SITE}/#contact`}>Contact</a>
               <a href={`${SITE}/partner.html`}>Partner</a>
               <a href={`${SITE}/about.html`}>Our Story</a>
@@ -297,7 +299,9 @@ export default function BlogPostClient({ post, recent, slug }: BlogPostClientPro
         <div className={`mobile-menu${menuOpen ? ' open' : ''}`}>
           <a href={`${SITE}/#programs`} onClick={() => setMenuOpen(false)}>Our Programs</a>
           <a href={`${SITE}/orphanage-games.html`} onClick={() => setMenuOpen(false)}>The Orphanage Games</a>
-          <Link href="/blog" onClick={() => setMenuOpen(false)}>Blog</Link>
+          <Link href="https://blog.nextgemfoundation.com" onClick={() => setMenuOpen(false)} target="_blank" rel="noopener noreferrer">
+            Blog
+          </Link>
           <a href={`${SITE}/orphanages.html`} onClick={() => setMenuOpen(false)}>Visit</a>
           <a href={`${SITE}/volunteer.html`} onClick={() => setMenuOpen(false)}>Volunteer</a>
           <a href={`${SITE}/partner.html`} onClick={() => setMenuOpen(false)}>Partner</a>
@@ -318,7 +322,9 @@ export default function BlogPostClient({ post, recent, slug }: BlogPostClientPro
       <div className="article-wrap">
         <main className="article-main">
           <div className="article-breadcrumb">
-            <Link href="/">Blog</Link>
+            <Link href="https://blog.nextgemfoundation.com" target="_blank" rel="noopener noreferrer">
+              Blog
+            </Link>
             <span>›</span>
             <span>{post.categoryTitle ?? 'Article'}</span>
           </div>

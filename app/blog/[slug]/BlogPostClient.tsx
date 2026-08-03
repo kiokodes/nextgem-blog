@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
 
@@ -95,6 +96,17 @@ export default function BlogPostClient({ post, recent, slug }: BlogPostClientPro
   const [donateClosed, setDonateClosed] = useState(false)
   const [copied, setCopied] = useState(false)
 
+  const progressRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const onScroll = () => {
+      const el = document.documentElement
+      const scroll = el.scrollTop / (el.scrollHeight - el.clientHeight)
+      if (progressRef.current) progressRef.current.style.width = `${Math.min(100, Math.max(0, scroll * 100))}%`
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   useEffect(() => {
     document.body.style.overflow = menuOpen || bankModalOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -134,6 +146,8 @@ export default function BlogPostClient({ post, recent, slug }: BlogPostClientPro
 
   return (
     <>
+      <div ref={progressRef} style={{ position: 'fixed', top: 0, left: 0, height: 4, background: 'linear-gradient(90deg,#1D56E8,#4a8eff)', width: '0%', zIndex: 9999, transition: 'width .05s linear' }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context':'https://schema.org','@type':'Article', headline: post.title, datePublished: post.publishedAt, author: { '@type':'Person', name: post.authorName || 'NextGEM Foundation' }, image: post.imageUrl ? [post.imageUrl] : [] }) }} />
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
         :root { --blue:#1D56E8; --blue-dk:#1440b8; --blue-lt:#eef3fd; --white:#ffffff; --gray:#f5f5f5; --text:#1a1a1a; --muted:#555555; --radius:6px; }
@@ -141,6 +155,7 @@ export default function BlogPostClient({ post, recent, slug }: BlogPostClientPro
         html{scroll-behavior:smooth;}
         body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);}
         a{text-decoration:none;color:inherit;}
+        a:hover{text-decoration:none;}
         img{display:block;max-width:100%;}
         .container{max-width:1140px;margin:0 auto;padding:0 24px;}
         nav{position:sticky;top:0;z-index:100;background:var(--white);border-bottom:1px solid #e8e8e8;}
